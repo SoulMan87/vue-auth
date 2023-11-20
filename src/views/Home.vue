@@ -1,4 +1,28 @@
-<script setup lang="ts">
+<script lang="ts">
+
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
+export default {
+  name: "Home",
+  setup: function () {
+    const message = ref('You are not logged in');
+
+    onMounted(async () => {
+      try {
+        const {data} = await axios.get('http://localhost:8000/api/user');
+
+        message.value = `Hello ${data.first_name} ${data.last_name}`;
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+
+    });
+    return {
+      message,
+    };
+  },
+};
 
 </script>
 
@@ -21,9 +45,10 @@
     </div>
 
     <div class="lead mt-5">
-      Start exploring the features of our full stack application!
+      <p>Start exploring the features of our full-stack application!</p>
+      <h2>{{ message }}</h2>
+      <div class="arrow-down"></div>
     </div>
-    <div class="arrow-down"></div>
   </div>
 </template>
 
@@ -35,12 +60,13 @@
 .container {
   max-width: 800px;
 }
+
 .arrow-down {
   width: 0;
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-top: 40px solid #007bff; /* Adjust color as needed */
+  border-top: 40px solid #007bff;
   margin: 20px auto;
   cursor: pointer;
 }
