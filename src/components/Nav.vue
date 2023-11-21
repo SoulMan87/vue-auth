@@ -10,8 +10,12 @@
           </li>
         </ul>
 
+        <div class="text-end" v-if="auth">
+          <router-link to="/" class="btn btn-outline-light me-2" @click="logout">Logout</router-link>
+        </div>
+
         <!-- User Authentication Links -->
-        <div class="text-end">
+        <div class="text-end" v-if="!auth">
           <router-link to="/login" class="btn btn-outline-light me-2">Login</router-link>
           <router-link to="/register" class="btn btn-outline-light me-2">Register</router-link>
         </div>
@@ -25,6 +29,31 @@ header {
 }
 </style>
 
-<script setup lang="ts">
+<script lang="ts">
+
+import {computed, onMounted} from "vue";
+import axios from "axios";
+import {useStore} from "vuex";
+
+export default {
+  name: "Nav",
+  setup() {
+    const store = useStore();
+    const auth = computed(() => store.state.auth);
+
+    const logout = async () => {
+      await axios.post('logout', {}, {withCredentials: true});
+
+      axios.defaults.headers.common['Authorization'] = '';
+
+      await store.dispatch('setAuth', false)
+    }
+
+    return {
+      auth,
+      logout
+    }
+  }
+}
 
 </script>

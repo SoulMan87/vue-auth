@@ -18,7 +18,7 @@
 
     <div class="lead mt-5">
       <p>Start exploring the features of our full-stack application!</p>
-      <h2>{{ message }}</h2>
+      <h2>{{ auth ? message : 'You are not logged in' }}</h2>
       <div class="arrow-down"></div>
     </div>
   </div>
@@ -26,29 +26,38 @@
 
 <script lang="ts">
 
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import {useStore} from "vuex";
 
 export default {
   name: "Home",
   setup: function () {
     const message = ref('You are not logged in');
 
+    const store = useStore();
+
+    const auth = computed(() => store.state.auth);
+
     onMounted(async () => {
       try {
         const {data} = await axios.get('user');
 
         message.value = `Hello ${data.first_name} ${data.last_name}`;
+
+        await store.dispatch('setAuth', true);
       } catch (error) {
+        await store.dispatch('setAuth', false);
         console.error('Error fetching user data:', error);
       }
 
     });
     return {
       message,
-    };
-  },
-};
+      auth
+    }
+  }
+}
 
 </script>
 
