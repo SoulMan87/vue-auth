@@ -49,7 +49,7 @@ export default {
     const router = useRouter();
     const submit = async () => {
 
-      const response = await axios.post('http://localhost:8000/api/login', data, {
+      const response = await axios.post('login', data, {
         withCredentials: true
       });
 

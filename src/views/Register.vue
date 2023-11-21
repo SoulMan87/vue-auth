@@ -61,7 +61,7 @@ export default {
     const router = useRouter();
     const submit = async () => {
       try {
-        await axios.post('http://localhost:8000/api/register', data);
+        await axios.post('register', data);
         await router.push('/login');
       } catch (error) {
         console.log('Error submitting the form:', error)

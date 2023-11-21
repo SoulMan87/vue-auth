@@ -1,31 +1,3 @@
-<script lang="ts">
-
-import {onMounted, ref} from "vue";
-import axios from "axios";
-
-export default {
-  name: "Home",
-  setup: function () {
-    const message = ref('You are not logged in');
-
-    onMounted(async () => {
-      try {
-        const {data} = await axios.get('http://localhost:8000/api/user');
-
-        message.value = `Hello ${data.first_name} ${data.last_name}`;
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-
-    });
-    return {
-      message,
-    };
-  },
-};
-
-</script>
-
 <template>
   <div class="container mt-5 text-center">
     <img src="@/assets/vue-logo.png" alt="Vue.js Logo" class="logo mb-4"/>
@@ -51,6 +23,34 @@ export default {
     </div>
   </div>
 </template>
+
+<script lang="ts">
+
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
+export default {
+  name: "Home",
+  setup: function () {
+    const message = ref('You are not logged in');
+
+    onMounted(async () => {
+      try {
+        const {data} = await axios.get('user');
+
+        message.value = `Hello ${data.first_name} ${data.last_name}`;
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+
+    });
+    return {
+      message,
+    };
+  },
+};
+
+</script>
 
 <style scoped>
 .logo {
