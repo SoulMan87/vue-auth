@@ -19,7 +19,7 @@
       </div>
 
       <div class="text-center mt-3">
-        <a href="#" class="text-decoration-none">Forgot Password?</a>
+        <router-link to="/forgot" class="text-center mt-3 text-decoration-none">Forgot Password?</router-link>
       </div>
 
       <div class="text-center mt-3">
