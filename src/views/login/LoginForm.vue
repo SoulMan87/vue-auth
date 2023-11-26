@@ -31,37 +31,32 @@
   </main>
 </template>
 
-
 <script lang="ts">
-
-import {reactive} from "vue";
+import {reactive, SetupContext} from "vue";
 import axios from "axios";
-import {useRouter} from "vue-router";
 
 export default {
-  name: "Login",
-  setup() {
+  name: "LoginForm",
+  emits: ['loginData'],
+  setup(props: any, context: SetupContext) {
     const data = reactive({
       email: '',
       password: ''
     });
 
-    const router = useRouter();
     const submit = async () => {
-
       const response = await axios.post('login', data, {
         withCredentials: true
       });
 
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-
-      await router.push('/');
+      await context.emit('loginData', response.data);
     }
     return {
       data, submit,
-    };
-  },
-};
+    }
+  }
+}
+
 </script>
 
 <style scoped>
